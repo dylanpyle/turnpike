@@ -1,6 +1,6 @@
 # turnpike
 
-A minimal [finite-state machine](https://en.wikipedia.org/wiki/Finite-state_machine) for JavaScript.
+A minimal [finite-state machine](https://en.wikipedia.org/wiki/Finite-state_machine) for JavaScript. [Live demo](http://jsfiddle.net/k2GH4/)
 
 ## Usage
 
