@@ -85,3 +85,19 @@ describe 'Turnpike', ->
     sm.act 'poke'
     cb1.called.should.be.true
     cb2.called.should.be.true
+
+  it 'should not call other instance\'s callbacks', ->
+    sm2 = new Turnpike
+      start: 'asleep'
+      events: [
+        { ev: 'poke', from: 'asleep', to: 'awake' }
+      ]
+
+    cb1 = sinon.stub()
+    cb2 = sinon.stub()
+    sm.onEnter 'awake', cb1
+    sm2.onEnter 'awake', cb2
+    sm.act 'poke'
+    cb1.called.should.be.true
+    cb2.called.should.be.false
+
