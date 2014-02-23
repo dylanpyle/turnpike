@@ -64,6 +64,13 @@ describe 'Turnpike', ->
     sm.act 'poke'
     cb.called.should.be.true
 
+  it 'should not transition if state doesnt change', ->
+    cb = sinon.stub()
+    sm.onExit 'wilding', cb
+    sm.act 'goWild'
+    sm.act 'goWild'
+    cb.called.should.be.false
+
   it 'should include arguments', ->
     cb = sinon.stub()
     sm.onEnter 'awake', cb

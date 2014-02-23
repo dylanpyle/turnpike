@@ -13,7 +13,7 @@ class Turnpike
       t.ev == ev && t.from in [@_state, '*']
     )[0]?.to
 
-    return false unless destination
+    return false unless destination && destination != @_state
 
     for call in @_exitCallbacks.filter((i) => i.state == @_state)
       call.cb args...
