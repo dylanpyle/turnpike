@@ -3,10 +3,8 @@ class Turnpike
   constructor: ({ start, events }) ->
     @_state = start
     @_events = events
-
-  _enterCallbacks: []
-
-  _exitCallbacks: []
+    @_enterCallbacks = []
+    @_exitCallbacks = []
 
   act: (ev, args...) ->
     destination = @_events.filter((t) =>
