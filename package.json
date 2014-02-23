@@ -1,0 +1,23 @@
+{
+  "name": "turnpike",
+  "version": "0.0.1",
+  "description": "A tiny finite state machine for JavaScript",
+  "main": "lib/turnpike.js",
+  "scripts": {
+    "test": "gulp test",
+    "build": "gulp"
+  },
+  "author": "Dylan Pyle <me@dylanpyle.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "coffee-script": "~1.7.1",
+    "gulp": "~3.5.2",
+    "gulp-mocha": "~0.4.1",
+    "gulp-coffee": "~1.4.1",
+    "gulp-uglify": "~0.2.1",
+    "gulp-concat": "~2.1.7",
+    "chai": "~1.9.0",
+    "mocha": "~1.17.1",
+    "sinon": "~1.8.2"
+  }
+}
