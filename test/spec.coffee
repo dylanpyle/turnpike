@@ -64,6 +64,12 @@ describe 'Turnpike', ->
     sm.act 'poke'
     cb.called.should.be.true
 
+  it 'should call object-formatted callbacks', ->
+    cb = sinon.stub()
+    sm.onExit asleep: cb
+    sm.act 'poke'
+    cb.called.should.be.true
+
   it 'should not transition if state doesnt change', ->
     cb = sinon.stub()
     sm.onExit 'wilding', cb

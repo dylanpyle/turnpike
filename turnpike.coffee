@@ -21,11 +21,16 @@ class Turnpike
 
     @_state = destination
 
-  onEnter: (state, cb) ->
-    @_enterCallbacks.push { state, cb }
+  _normalizeListeners: (name, cb) ->
+    if typeof name == 'object'
+      return Object.keys(name).map (k) -> { state: k, cb: name[k] }
+    else return [{ state: name, cb }]
 
-  onExit: (state, cb) ->
-    @_exitCallbacks.push { state, cb }
+  onEnter: (name, cb) ->
+    @_enterCallbacks = @_enterCallbacks.concat @_normalizeListeners name, cb
+
+  onExit: (name, cb) ->
+    @_exitCallbacks = @_exitCallbacks.concat @_normalizeListeners name, cb
 
   getState: -> @_state
 

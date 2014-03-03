@@ -36,6 +36,13 @@ Define state/enter exit transition callbacks:
     state.onExit('asleep', function(){ console.log('Woke up'); });
     state.onEnter('shaken', function(){ console.log('Got shook'); });
 
+Or, formatted as an object:
+
+    state.onEnter({
+      asleep: function(){ console.log('Fell asleep'); },
+      awake: function(){ console.log('Woke up'); }
+    });
+
 And use the `act` method to trigger events:
 
     state.act('shake'); // -> 'Woke up'
