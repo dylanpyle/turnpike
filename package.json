@@ -1,5 +1,5 @@
 {
-  "name": "turnpike",
+  "name": "turnpike-sm",
   "version": "0.0.3",
   "description": "A tiny finite state machine for JavaScript",
   "main": "lib/turnpike.js",
