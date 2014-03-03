@@ -2,6 +2,20 @@
 
 A minimal [finite-state machine](https://en.wikipedia.org/wiki/Finite-state_machine) for JavaScript. [Live demo](http://jsfiddle.net/k2GH4/)
 
+## Installation
+
+node:
+
+    $ npm install turnpike-sm
+
+browser (global):
+
+    <script src='lib/turnpike.min.js'></script>
+
+browser (AMD):
+
+    define(['turnpike'], function(Turnpike) { ... });
+
 ## Usage
 
 To instantiate a new state machine:
