@@ -9,6 +9,7 @@
   },
   "author": "Dylan Pyle <me@dylanpyle.com>",
   "license": "MIT",
+  "homepage": "https://github.com/dylanpyle/turnpike",
   "devDependencies": {
     "coffee-script": "~1.7.1",
     "gulp": "~3.5.2",

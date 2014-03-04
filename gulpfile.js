@@ -8,7 +8,14 @@ var gulp = require('gulp'),
 
 require('coffee-script/register');
 
-var banner = "/* <%= name %> v<%= version %> built <%= (new Date).toDateString() %> */";
+var banner = [
+  "/*",
+  " * <%= name %> v<%= version %>",
+  " * <%= homepage %>",
+  " * (c) <%= (new Date).getFullYear() %> <%= author %>",
+  " * Released under the <%= license %> license",
+  " */\n"
+].join('\n');
 
 gulp.task('test', function () {
   gulp.src('./test/*.coffee')
@@ -18,7 +25,7 @@ gulp.task('test', function () {
 gulp.task('coffee', function () {
   gulp.src('./turnpike.coffee')
     .pipe(coffee())
-    .pipe(header(banner+'\n', pkg))
+    .pipe(header(banner, pkg))
     .pipe(gulp.dest('./lib/'));
 });
 
