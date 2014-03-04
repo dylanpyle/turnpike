@@ -1,6 +1,6 @@
 {
   "name": "turnpike-sm",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A tiny finite state machine for JavaScript",
   "main": "lib/turnpike.js",
   "scripts": {
