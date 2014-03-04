@@ -38,7 +38,7 @@ if module?.exports
   module.exports = Turnpike
 
 else if define?.amd
-  define Turnpike
+  define -> Turnpike
 
 else
   root = @
