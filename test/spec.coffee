@@ -15,6 +15,8 @@ describe 'Turnpike', ->
         { ev: 'chill', from: 'annoyed', to: 'asleep' }
         { ev: 'rest', from: 'awake', to: 'asleep' }
         { ev: 'goWild', from: '*', to: 'wilding' }
+        { ev: 'adoptObj', from: '*', to: { adopted: true } }
+        { ev: 'adoptArr', from: '*', to: [ 'first', 'second' ] }
       ]
 
   it 'should be in the initial state', ->
@@ -43,6 +45,27 @@ describe 'Turnpike', ->
     states.push sm.getState()
 
     states.should.deep.eq ['awake', 'asleep', 'awake', 'annoyed', 'asleep']
+
+  it '(#4) should allow objects as states', ->
+    states = []
+    sm.act 'poke' # awake
+    states.push sm.getState()
+    sm.act 'adoptObj' # { adopted: true }
+    states.push sm.getState()
+    sm.act 'goWild' # wilding
+    states.push sm.getState()
+    sm.act 'adoptArr' # ['first', 'second']
+    states.push sm.getState()
+    sm.act 'goWild' # wilding
+    states.push sm.getState()
+
+    states.should.deep.eq [
+      'awake'
+      { adopted: true }
+      'wilding'
+      ['first','second']
+      'wilding'
+    ]
 
   it 'should not transition when given an invalid action', ->
     sm.act 'madeup'
