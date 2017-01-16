@@ -1,69 +1,71 @@
-# turnpike
+# Turnpike
 
-A minimal [finite-state machine](https://en.wikipedia.org/wiki/Finite-state_machine) for JavaScript. [Live demo](http://jsfiddle.net/k2GH4/)
+A minimal [finite-state
+machine](https://en.wikipedia.org/wiki/Finite-state_machine) for JavaScript.
 
 ## Installation
 
-node:
-
-    $ npm install turnpike-sm
-
-browser (global):
-
-    <script src='lib/turnpike.min.js'></script>
-
-browser (AMD):
-
-    define(['turnpike'], function(Turnpike) { ... });
+```bash
+$ npm install turnpike-sm --save
+```
 
 ## Usage
 
-To instantiate a new state machine:
+Defining state transitions:
 
-    var state = new Turnpike({
-      start: 'asleep',
-      events: [
-        { ev: 'shake', from: 'asleep', to: 'awake' },
-        { ev: 'shake', from: 'awake', to: 'shaken' },
-        { ev: 'rest', from: 'shaken', to: 'asleep' }
-      ]
-    });
+```javascript
+const Turnpike = require('turnpike');
 
-**Note:** You can also use a wildcard (`*`) `from` value to match any state.
+const turnpike = new Turnpike('asleep', [
+  { name: 'bother', from: 'asleep', to: 'awake' },
+  { name: 'bother', from: 'awake', to: 'bothered' },
+  { name: 'rest', from: 'jumping', to: 'asleep' },
+  { name: 'jump', from: Turnpike.ANY, to: 'jumping' }
+]);
+```
 
-Define state/enter exit transition callbacks:
+The special value `Turnpike.ANY` will match any `from` state.
 
-    state.onExit('asleep', function(){ console.log('Woke up'); });
-    state.onEnter('shaken', function(){ console.log('Got shook'); });
+Turnpike is an [EventEmitter](https://nodejs.org/api/events.html) and provides
+several events on each state transition:
 
-Or, formatted as an object:
+```javascript
+turnpike.on('exit:asleep', (...args) => {
+  console.log('Sleep over', args);
+});
 
-    state.onEnter({
-      asleep: function(){ console.log('Fell asleep'); },
-      awake: function(){ console.log('Woke up'); }
-    });
+turnpike.on('exit', (stateName, ...args) => {
+  console.log(`Exiting ${stateName} with args:`, args);
+});
 
-And use the `act` method to trigger events:
+turnpike.on('enter', (stateName, ...args) => {
+  console.log(`Entering ${stateName} with args:`, args);
+});
 
-    state.act('shake'); // -> 'Woke up'
-    state.act('shake'); // -> 'Got shook'
+turnpike.on('enter:jumping', (height, speed) => {
+  console.log(`Started jumping, height: ${height}, speed: ${speed}`);
+});
 
-**Note:** Any further arguments given to `act` will be passed through to any callbacks.
+turnpike.act('jump', 12, 'fast');
+```
 
-To retrieve the current state:
+## Testing / Linting
 
-    state.getState(); // -> 'shaken'
+```
+$ npm test
+$ npm run lint
+```
 
-## Testing and building
+## Migrating from 0.x to 1.x
 
-    $ npm install
-    $ gulp test
-    $ gulp build
+A few minor breaking changes:
+
+- Initial state is now a separate argument.
+- `ev` was renamed to `name` in the event definition.
+- Now uses EventEmitter syntax (`on('event', ...)`) rather than bespoke
+  `onEnter` / `onExit` handlers.
+- No more browser build provided - you should be bundling that yourself.
 
 ## License
 
 MIT
-
-## Credits
-
-Constructor syntax loosely inspired by [jakesgordon](https://github.com/jakesgordon/javascript-state-machine)

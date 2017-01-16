@@ -1,25 +1,28 @@
 {
   "name": "turnpike-sm",
-  "version": "0.1.0",
-  "description": "A tiny finite state machine for JavaScript",
-  "main": "lib/turnpike.js",
+  "version": "0.2.0",
+  "description": "A small finite state machine for JavaScript",
+  "main": "index.js",
   "scripts": {
-    "test": "gulp test",
-    "build": "gulp"
+    "test": "tape spec.js | $(npm bin)/tap-spec",
+    "lint": "eslint . --ignore-path .gitignore"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dylanpyle/turnpike.git"
   },
   "author": "Dylan Pyle <me@dylanpyle.com>",
   "license": "MIT",
-  "homepage": "https://github.com/dylanpyle/turnpike",
+  "bugs": {
+    "url": "https://github.com/dylanpyle/turnpike/issues"
+  },
+  "homepage": "https://github.com/dylanpyle/turnpike#readme",
   "devDependencies": {
-    "coffee-script": "~1.7.1",
-    "gulp": "~3.5.2",
-    "gulp-mocha": "~0.4.1",
-    "gulp-coffee": "~1.4.1",
-    "gulp-uglify": "~0.2.1",
-    "gulp-concat": "~2.1.7",
-    "chai": "~1.9.0",
-    "mocha": "~1.17.1",
-    "sinon": "~1.8.2",
-    "gulp-header": "~1.0.2"
-  }
+    "eslint": "3.13.1",
+    "eslint-config-airbnb-base": "11.0.1",
+    "eslint-plugin-import": "2.2.0",
+    "tap-spec": "4.1.1",
+    "tape": "4.6.3"
+  },
+  "dependencies": {}
 }
