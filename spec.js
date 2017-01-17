@@ -112,3 +112,35 @@ it('emits `exit` with correct data', (t) => {
     [6, { shouldWork: true }]
   ]);
 });
+
+it('allows alternative EventEmitter to be provided', (t) => {
+  t.plan(1);
+
+  const logs = [];
+
+  /* eslint-disable class-methods-use-this */
+  class BadEmitter {
+    emit(...args) {
+      logs.push(args);
+    }
+    on() {}
+  }
+  /* eslint-enable class-methods-use-this */
+
+  const tp2 = new Turnpike(
+    'asleep',
+    [
+      { name: 'bother', from: 'asleep', to: 'awake' }
+    ],
+    { EventEmitter: BadEmitter }
+  );
+
+  tp2.act('bother');
+
+  t.deepEqual(logs, [
+    ['exit', 'asleep'],
+    ['exit:asleep'],
+    ['enter', 'awake'],
+    ['enter:awake']
+  ]);
+});

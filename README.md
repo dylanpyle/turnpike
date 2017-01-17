@@ -11,11 +11,17 @@ $ npm install turnpike-sm --save
 
 ## Usage
 
-Defining state transitions:
-
 ```javascript
 const Turnpike = require('turnpike');
 
+const turnpike = new Turnpike(initialState, transitions, options);
+```
+
+`initialState` and `transitions` are required. The first is the initial state
+for the state machine to start in, the second is an array of transitions that
+will happen when a given action (`name`) occurs;
+
+```javascript
 const turnpike = new Turnpike('asleep', [
   { name: 'bother', from: 'asleep', to: 'awake' },
   { name: 'bother', from: 'awake', to: 'bothered' },
@@ -26,8 +32,19 @@ const turnpike = new Turnpike('asleep', [
 
 The special value `Turnpike.ANY` will match any `from` state.
 
-Turnpike is an [EventEmitter](https://nodejs.org/api/events.html) and provides
-several events on each state transition:
+The third argument (`opts`) currently accepts 1 option: `opts.EventEmitter` is
+an alternative EventEmitter implementation to use, if your platform doesn't
+include node's `require('events')`.
+
+instance methods include:
+
+```
+turnpike.act(actionName, [...args])   // Perform an action
+turnpike.getState()                   // Retrieve the current state
+```
+
+Turnpike includes an [EventEmitter](https://nodejs.org/api/events.html) and
+provides several events on each state transition:
 
 ```javascript
 turnpike.on('exit:asleep', (...args) => {

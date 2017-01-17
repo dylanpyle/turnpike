@@ -1,7 +1,5 @@
 'use strict';
 
-const EventEmitter = require('events');
-
 const ANY = Symbol('ANY');
 
 function assert(bool, message) {
@@ -23,9 +21,9 @@ function validateDefinition(events) {
   });
 }
 
-class Turnpike extends EventEmitter {
+class Turnpike {
   /**
-   * @param {String} start The initial state
+   * @param {String} initialState The initial state
    * @param {Array} events Event definitions, in the format:
    *   [
    *     { name: 'shake', from: 'asleep', to: 'awake' },
@@ -38,15 +36,22 @@ class Turnpike extends EventEmitter {
    * Definitions will be run in the order defined and all against the same
    * initial state; if multiple match, the last one that matches the original
    * `from` value will be used.
+   *
+   * @param {Object} opts Additional options. Currently supports:
+   *   `EventEmitter`: An EventEmitter class to use instead of `require('events')`
    */
-  constructor(start, events) {
-    super();
-
-    assert(typeof start === 'string', 'Starting state must be a string');
+  constructor(initialState, events, opts = {}) {
+    assert(typeof initialState === 'string', 'Initial state must be a string');
 
     validateDefinition(events);
 
-    this._state = start;
+    // eslint-disable-next-line global-require
+    const EventEmitter = opts.EventEmitter || require('events');
+    this._emitter = new EventEmitter();
+
+    this.on = this._emitter.on.bind(this._emitter);
+
+    this._state = initialState;
     this._events = events;
   }
 
@@ -73,13 +78,13 @@ class Turnpike extends EventEmitter {
     if (newState !== this._state) {
       // Technically 'beforeExit' / 'afterEnter'... open to adding more
       // lifecycle events here if anyone has a use case for them.
-      this.emit('exit', previousState, ...args);
-      this.emit(`exit:${previousState}`, ...args);
+      this._emitter.emit('exit', previousState, ...args);
+      this._emitter.emit(`exit:${previousState}`, ...args);
 
       this._state = newState;
 
-      this.emit('enter', newState, ...args);
-      this.emit(`enter:${newState}`, ...args);
+      this._emitter.emit('enter', newState, ...args);
+      this._emitter.emit(`enter:${newState}`, ...args);
     }
   }
 
